@@ -31,7 +31,6 @@ async function translateText() {
   }
 
   try {
-    // Dummy Azure API call structure (replace values as per your actual API details)
     const response = await fetch(
       "https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&to=" +
         targetLang,
