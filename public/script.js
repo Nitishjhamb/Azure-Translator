@@ -31,20 +31,16 @@ async function translateText() {
   }
 
   try {
-    const response = await fetch(
-      "https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&to=" +
-        targetLang,
-      {
-        method: "POST",
-        headers: {
-          "Ocp-Apim-Subscription-Key":
-            "BNT05m83kPAaXOdVnlIOv2orwKgInzSRcZtCgsSKeXQjnFlvG5hAJQQJ99BEACGhslBXJ3w3AAAbACOGHbUB",
-          "Ocp-Apim-Subscription-Region": "centralindia",
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify([{ Text: inputText }]),
-      }
-    );
+    const response = await fetch("/translate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        text: inputText,
+        to: targetLang,
+      }),
+    });
 
     const data = await response.json();
     const translated = data[0]?.translations[0]?.text || "Translation failed.";
@@ -52,8 +48,7 @@ async function translateText() {
     output.classList.add("show");
   } catch (error) {
     console.error(error);
-    output.textContent =
-      "❌ Error while translating. Please check the API key or network.";
+    output.textContent = "❌ Error while translating. Please try again later.";
     output.classList.add("show");
   }
 }
