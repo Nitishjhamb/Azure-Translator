@@ -4,11 +4,16 @@ const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000; // ← This line is important for Render
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static("public"));
+app.use(express.static("public")); // Optional, only if you have frontend assets
+
+// Optional: Root route to avoid 404 on /
+app.get("/", (req, res) => {
+  res.send("🌐 Azure Translator API is running.");
+});
 
 app.post("/translate", async (req, res) => {
   const { text, to } = req.body;
