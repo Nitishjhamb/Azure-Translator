@@ -20,7 +20,8 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 async function translateText() {
-  const inputText = document.getElementById("inputText").value.trim();
+  const inputEl = document.getElementById("inputText");
+  const inputText = inputEl.value.trim();
   const targetLang = document.getElementById("targetLang").value;
   const output = document.getElementById("output");
 
@@ -46,6 +47,9 @@ async function translateText() {
     const translated = data[0]?.translations[0]?.text || "Translation failed.";
     output.textContent = translated;
     output.classList.add("show");
+
+    // ✅ Clear input field after successful translation
+    inputEl.value = "";
   } catch (error) {
     console.error(error);
     output.textContent = "❌ Error while translating. Please try again later.";
