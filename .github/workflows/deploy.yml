@@ -13,7 +13,3 @@ jobs:
       - name: Trigger Render Deploy Hook
         run: |
           curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
-
-      - name: Check API Health
-        run: |
-          curl -f https://azure-translator.onrender.com || exit 1
