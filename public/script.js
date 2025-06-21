@@ -34,22 +34,26 @@ async function translateText() {
   try {
     const response = await fetch("/translate", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        text: inputText,
-        to: targetLang,
-      }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: inputText, to: targetLang }),
     });
 
-    const data = await response.json();
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Server error (${response.status}): ${errorText}`);
+    }
+
+    let data;
+    try {
+      data = await response.json();
+    } catch (e) {
+      throw new Error("Invalid JSON in response");
+    }
+
     const translated = data[0]?.translations[0]?.text || "Translation failed.";
     output.textContent = translated;
     output.classList.add("show");
-
-    // ✅ Clear input field after successful translation
-    inputEl.value = "";
+    inputEl.value = ""; // Clear after success
   } catch (error) {
     console.error(error);
     output.textContent = "❌ Error while translating. Please try again later.";
