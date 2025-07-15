@@ -1,27 +1,16 @@
-const express = require("express");
-const axios = require("axios");
-const cors = require("cors");
-require("dotenv").config();
+// api/translate.js
+import axios from "axios";
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
 
-app.use(cors());
-app.use(express.json());
-app.use(express.static("public"));
-
-// Root route
-app.get("/", (req, res) => {
-  res.send("🌐 Azure Translator API is running.");
-});
-
-// ✅ Health check endpoint for Render
-app.get("/healthz", (req, res) => {
-  res.status(200).send("OK");
-});
-
-app.post("/translate", async (req, res) => {
   const { text, to } = req.body;
+
+  if (!text || !to) {
+    return res.status(400).json({ error: "Missing required parameters." });
+  }
 
   try {
     const response = await axios({
@@ -36,13 +25,9 @@ app.post("/translate", async (req, res) => {
       data: [{ Text: text }],
     });
 
-    res.json(response.data);
+    res.status(200).json(response.data);
   } catch (error) {
     console.error(error?.response?.data || error.message);
     res.status(500).json({ error: "Translation failed" });
   }
-});
-
-app.listen(PORT, () => {
-  console.log(`✅ Server running at http://localhost:${PORT}`);
-});
+}
