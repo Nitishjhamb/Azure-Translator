@@ -1,7 +1,6 @@
-// api/translate.js
-import axios from "axios";
+const axios = require("axios");
 
-export default async function handler(req, res) {
+module.exports = async function (req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
@@ -14,9 +13,9 @@ export default async function handler(req, res) {
 
   try {
     const response = await axios({
-      baseURL: `https://api.cognitive.microsofttranslator.com`,
-      url: `/translate?api-version=3.0&to=${to}`,
       method: "post",
+      baseURL: "https://api.cognitive.microsofttranslator.com",
+      url: `/translate?api-version=3.0&to=${to}`,
       headers: {
         "Ocp-Apim-Subscription-Key": process.env.AZURE_KEY,
         "Ocp-Apim-Subscription-Region": process.env.AZURE_REGION,
@@ -26,8 +25,8 @@ export default async function handler(req, res) {
     });
 
     res.status(200).json(response.data);
-  } catch (error) {
-    console.error(error?.response?.data || error.message);
+  } catch (err) {
+    console.error(err?.response?.data || err.message);
     res.status(500).json({ error: "Translation failed" });
   }
-}
+};
