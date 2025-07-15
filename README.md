@@ -5,7 +5,8 @@ Azure Translator is a web-based translation application built using Azure Cognit
 ## Live Demo
 
 Try the application online at:  
-[https://azure-translator.onrender.com/](https://azure-translator.onrender.com/)
+https://azure-translator-two.vercel.app/
+(https://azure-translator-two.vercel.app/)
 
 ## Features
 
